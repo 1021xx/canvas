@@ -1,0 +1,16 @@
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  /* 배경색상이 무조건있어야됨 */
+  /* filter: blur(50px) contrast(50); */
+  /* background-color: #fff;  */
+
+  /* svg사용시 */
+  filter: url('#gooey');
+}
