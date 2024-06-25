@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>minigame</title>
+  <!-- https://trixelized.itch.io/starstring-fields -->
+  <!-- https://itch.io/game-assets // 2d 게임자료 -->
+  <!-- https://www.mapeditor.org/download.html tiled -->
+  <link rel="stylesheet" href="style.css">
+  <!-- gsap cdn -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <img src="./assets/bg1.png" id="bg1-img" class="assets-img">
+  <img src="./assets/bg2.png" id="bg2-img" class="assets-img">
+  <img src="./assets/bg3.png" id="bg3-img" class="assets-img">
+  <img src="./assets/Wall.png" id="wall-img" class="assets-img">
+  <img src="./assets/bird.png" id="bird-img" class="assets-img">
+  <img src="./assets/coin.png" id="coin-img" class="assets-img">
+
+  <main>
+    <section class="ready-screen">
+      <img src="./assets/title.png" class="title-img">
+      <img src="./assets/play.svg" class="play-img">
+    </section>
+
+    <section class="finish-screen">
+      <div class="distance">0m</div>
+      <div class="coin">coin</div>
+      <img src="./assets/replay.svg" class="replay-img">
+    </section>
+
+    <canvas></canvas>
+  </main>
+
+  <script type="module" src="index.js"></script>
+</body>
+</html>
