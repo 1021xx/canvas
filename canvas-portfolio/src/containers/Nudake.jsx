@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
+import throttle from 'lodash/throttle'
+import gsap from 'gsap'
 import "../style/containers/Nudake.scss";
 
 import image1 from "../assets/nudake-11.jpg";
 import image2 from "../assets/nudake-22.jpg";
 import image3 from "../assets/nudake-33.jpg";
-import { getAngle, getDistance, getScrupedPercent } from "../utils/utils";
+import { drawImageCenter, getAngle, getDistance, getScrupedPercent } from "../utils/utils";
 
 const Nudake = () => {
   const canvasRef = useRef(null);
@@ -15,8 +17,10 @@ const Nudake = () => {
     const ctx = canvas.getContext("2d");
 
     const imageSrcs = [image1, image2, image3];
+    const loadedImages = []
     let currIndex = 0;
     let prevPos = {x:0, y:0}
+    let isChanging = false
 
     let canvasWidth, canvasHeight;
 
@@ -28,20 +32,49 @@ const Nudake = () => {
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
 
-      drawImage();
+      preloadImages().then(()=>drawImage())
+    }
+
+    function preloadImages(){
+      return new Promise((resolve, reject) => {
+        let loaded = 0
+        imageSrcs.forEach(src => {
+          const img = new Image()
+          img.src = src
+          img.onload = () => {
+            loaded += 1
+            loadedImages.push(img)
+            if(loaded === imageSrcs.length) return resolve()
+          }
+        })
+      })
     }
 
     function drawImage() {
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-      const image = new Image();
-      image.src = imageSrcs[currIndex];
-      image.onload = () => {
-        ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight);
-      };
+      isChanging = true
+      const image = loadedImages[currIndex]
+      const firstDrawing = ctx.globalCompositeOperation === 'source-over'
+
+      gsap.to(canvas, {
+        opacity: 0,
+        duration: firstDrawing ? 0 : 1,
+
+        onComplete: ()=>{
+          canvas.style.opacity = 1
+          ctx.globalCompositeOperation = 'source-over'
+          drawImageCenter(canvas, ctx, image)
+    
+          const nextImage = imageSrcs[(currIndex + 1) % imageSrcs.length]
+          canvasParent.style.backgroundImage = `url(${nextImage})`
+          prevPos = null
+
+          isChanging = false
+        }
+      })
     }
 
     function onMouseDown(e) {
-      console.log("onMouseDown");
+      if(isChanging) return
       canvas.addEventListener("mouseup", onMouseUp);
       canvas.addEventListener("mouseleave", onMouseUp);
       canvas.addEventListener("mousemove", onMouseMove);
@@ -49,19 +82,19 @@ const Nudake = () => {
       prevPos = {x:e.offsetX, y: e.offsetY}
     }
     function onMouseUp() {
-      console.log("onMouseUp");
       canvas.removeEventListener("mouseup", onMouseUp);
       canvas.removeEventListener("mouseleave", onMouseUp);
       canvas.removeEventListener("mousemove", onMouseMove);
     }
     function onMouseMove(e) {
-      console.log("onMouseMove");
+      if(isChanging) return
       drawCircles(e);
       checkPercent()
     }
 
     function drawCircles(e) {
       const nextPos = {x:e.offsetX, y: e.offsetY}
+      if(!prevPos) prevPos = nextPos
       const dist = getDistance(prevPos,nextPos)
       const angle = getAngle(prevPos,nextPos)
 
@@ -71,7 +104,7 @@ const Nudake = () => {
 
         ctx.globalCompositeOperation = 'destination-out'
         ctx.beginPath();
-        ctx.arc(x, y, 50, 0, Math.PI * 2);
+        ctx.arc(x, y, canvasWidth/15, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
       }
@@ -79,10 +112,13 @@ const Nudake = () => {
       prevPos = nextPos
     }
 
-    function checkPercent(){
+    const checkPercent = throttle(() => {
       const percent = getScrupedPercent(ctx, canvasWidth, canvasHeight)
-      console.log(percent)
-    }
+      if(percent>50){
+        currIndex = (currIndex +1) %imageSrcs.length
+        drawImage()
+      }
+    }, 500)
 
     canvas.addEventListener("mousedown", onMouseDown);
     canvas.addEventListener("resize", resize);
@@ -95,9 +131,9 @@ const Nudake = () => {
   }, []);
 
   return (
-    <div className='nudake'>
+    <span className='nudake'>
       <canvas ref={canvasRef} />
-    </div>
+    </span>
   )
 };
 
