@@ -1,11 +1,12 @@
 import ArrowImg from "./assets/arrow.svg";
 import Nudake from "./containers/Nudake.jsx";
+import RotateCanvas from "./containers/RotateCanvas.jsx";
 
 function App() {
   return (
     <>
       <div className="app">
-        <section className="section-1">
+        {/* <section className="section-1">
           <header>
             <h1>1021</h1>
             <ul>
@@ -14,7 +15,7 @@ function App() {
               <li>Codepen</li>
             </ul>
           </header>
-          <main>
+          <main> 
             <div><Nudake /></div>
           </main>
         </section>
@@ -37,20 +38,10 @@ function App() {
             explicabo suscipit deleniti fugiat facilis velit earum praesentium
             expedita, perspiciatis ipsum aspernatur alias?
           </article>
-        </section>
+        </section> */}
 
         <section className="section-4">
-          <canvas></canvas>
-          <aside>
-            <h1>Javascript</h1>
-            <h2>⭐⭐⭐⭐⭐</h2>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Provident iusto tempora expedita est porro tenetur, possimus et
-              laboriosam minus ullam, cum voluptatum, iste soluta quis ad. Quasi
-              voluptatibus autem quo.
-            </p>
-          </aside>
+          <RotateCanvas />
         </section>
       </div>
 
