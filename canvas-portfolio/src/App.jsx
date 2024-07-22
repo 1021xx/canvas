@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div className="app">
-        {/* <section className="section-1">
+        <section className="section-1">
           <header>
             <h1>1021</h1>
             <ul>
@@ -38,7 +38,7 @@ function App() {
             explicabo suscipit deleniti fugiat facilis velit earum praesentium
             expedita, perspiciatis ipsum aspernatur alias?
           </article>
-        </section> */}
+        </section>
 
         <section className="section-4">
           <RotateCanvas />
@@ -46,7 +46,7 @@ function App() {
       </div>
 
       <footer>
-        <div className="email">xxoke@gmail.com</div>
+        <div className="email">xxokee@gmail.com</div>
       </footer>
     </>
   );
